@@ -244,6 +244,7 @@
         document.getElementById("config").style.display = "none";
         document.getElementById("mainGame").style.display = "block";
         document.getElementById("actions").style.display = "block";
+        
         updateTurnInfo();
         updateLives();
     }
@@ -407,11 +408,9 @@ function performShoot(target) {
         }
     }
 
-    if (totalBullets.length === 0 && !gameOver) {
+    if (totalBullets.length === 0 ) {
         document.getElementById("result").innerText = "It's a tie! No bullets left!";
         document.getElementById("result").style.display = "block";
-        document.getElementById("reset").style.display = "block";
-        document.getElementById("mainGame").style.display = "block";
         gameOver = true;
     }
 
@@ -419,16 +418,20 @@ function performShoot(target) {
             document.getElementById("actions").style.display = "none";
             document.getElementById("reset").style.display = "block";
             document.getElementById("result").style.display = "block";
-            document.getElementById("shootSelf").style.display = "none";
-            document.getElementById("shootEnemy").style.display = "none";
         }
     }
 
     function switchTurn() {
+      if (totalBullets.length === 0 ) {
+        document.getElementById("result").innerText = "It's a tie! No bullets left!";
+        document.getElementById("result").style.display = "block";
+        gameOver = true;
+      } else {
         currentPlayer = currentPlayer === 1 ? 2 : 1;
         updateTurnInfo();
         document.getElementById("result").innerText = '';
         document.getElementById("actions").style.display = "block";
+      }
     }
 </script>
  
