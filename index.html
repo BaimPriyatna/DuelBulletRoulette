@@ -244,7 +244,6 @@
         document.getElementById("config").style.display = "none";
         document.getElementById("mainGame").style.display = "block";
         document.getElementById("actions").style.display = "block";
-        
         updateTurnInfo();
         updateLives();
     }
@@ -407,27 +406,38 @@ function performShoot(target) {
             }, 1000);
         }
     }
+if (totalBullets.length === 0 && !gameOver) {
+    document.getElementById("result").innerText = "It's a tie! No bullets left!";
+    document.getElementById("result").style.display = "block";
+    document.getElementById("reset").style.display = "block";
 
-    if (totalBullets.length === 0 ) {
-        document.getElementById("result").innerText = "It's a tie! No bullets left!";
-        document.getElementById("result").style.display = "block";
-        gameOver = true;
-    }
+    gameOver = true;
+
+    // Pastikan aksi tidak ditampilkan lagi saat seri
+    document.getElementById("actions").style.display = "none";
+}
+    
 
         if (gameOver) {
             document.getElementById("actions").style.display = "none";
             document.getElementById("reset").style.display = "block";
-            document.getElementById("result").style.display = "block";
         }
     }
-
-    function switchTurn() {
+function switchTurn() {
+    if (totalBullets.length === 0 && !gameOver) {
+        gameOver = true;
+        document.getElementById("result").innerText = "It's a tie! No bullets left!";
+        document.getElementById("result").style.display = "block";
+        document.getElementById("reset").style.display = "block";
+        document.getElementById("actions").style.display = "none";  // Hide actions when game is over
+    } else if (!gameOver) {
         currentPlayer = currentPlayer === 1 ? 2 : 1;
         updateTurnInfo();
         document.getElementById("result").innerText = '';
         document.getElementById("actions").style.display = "block";
-      }
     }
+}
+    
 </script>
  
 </body>
