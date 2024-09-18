@@ -293,25 +293,29 @@
     }
 
     function resetGame() {
-        playerLives = {1: 3, 2: 3};
-        gameOver = false;
-        pendingAction = null;
+    playerLives = {1: 3, 2: 3};
+    gameOver = false;
+    pendingAction = null;
 
-        document.getElementById("player1").src = "player1_idle.png";
-        document.getElementById("player2").src = "player2_idle.png";
+    document.getElementById("player1").src = "player1_idle.png";
+    document.getElementById("player2").src = "player2_idle.png";
 
-        document.getElementById("config").style.display = "block";
-        document.getElementById("mainGame").style.display = "none";
-        document.getElementById("result").innerText = '';
-        document.getElementById("reset").style.display = "none";
-        document.getElementById("actions").style.display = "block";
-        totalBullets = [];
+    // Pastikan semua elemen aksi dan informasi terlihat kembali
+    document.getElementById("config").style.display = "block";
+    document.getElementById("mainGame").style.display = "none";
+    document.getElementById("result").innerText = '';
+    document.getElementById("result").style.display = "none";  // Sembunyikan hasil sementara
+    document.getElementById("reset").style.display = "none";   // Sembunyikan tombol reset
+    document.getElementById("actions").style.display = "block"; // Pastikan tombol aksi muncul kembali
 
-        currentPlayer = Math.random() > 0.5 ? 1 : 2;
+    totalBullets = [];
 
-        updateTurnInfo();
-        updateLives();
-    }
+    // Random pemain pertama
+    currentPlayer = Math.random() > 0.5 ? 1 : 2;
+
+    updateTurnInfo();
+    updateLives();
+}
 
     document.getElementById("shootSelf").addEventListener("click", function() {
         confirmAction("self");
