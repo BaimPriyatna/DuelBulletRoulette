@@ -233,20 +233,21 @@
     document.getElementById("reset").addEventListener("click", resetGame);
 
     function startGame() {
-        safeBullets = parseInt(document.getElementById("safeBulletCount").innerText);
-        dangerBullets = parseInt(document.getElementById("dangerBulletCount").innerText);
+    safeBullets = parseInt(document.getElementById("safeBulletCount").innerText);
+    dangerBullets = parseInt(document.getElementById("dangerBulletCount").innerText);
 
-        totalBullets = createBullets(safeBullets, dangerBullets);
+    totalBullets = createBullets(safeBullets, dangerBullets);
 
-        totalBullets = shuffle(totalBullets);
-        currentPlayer = Math.random() > 0.5 ? 1 : 2;
+    totalBullets = shuffle(totalBullets);
+    currentPlayer = Math.random() > 0.5 ? 1 : 2;
 
-        document.getElementById("config").style.display = "none";
-        document.getElementById("mainGame").style.display = "block";
-        document.getElementById("actions").style.display = "block";
-        updateTurnInfo();
-        updateLives();
-    }
+    document.getElementById("config").style.display = "none";
+    document.getElementById("mainGame").style.display = "block";
+    document.getElementById("actions").style.display = "block"; // Tampilkan tombol aksi
+    updateTurnInfo();
+    updateLives();
+}
+
 
     function createBullets(safe, danger) {
         let bullets = [];
@@ -293,25 +294,28 @@
     }
 
     function resetGame() {
-        playerLives = {1: 3, 2: 3};
-        gameOver = false;
-        pendingAction = null;
+    playerLives = {1: 3, 2: 3};
+    gameOver = false;
+    pendingAction = null;
 
-        document.getElementById("player1").src = "player1_idle.png";
-        document.getElementById("player2").src = "player2_idle.png";
+    document.getElementById("player1").src = "player1_idle.png";
+    document.getElementById("player2").src = "player2_idle.png";
 
-        document.getElementById("config").style.display = "block";
-        document.getElementById("mainGame").style.display = "none";
-        document.getElementById("result").innerText = '';
-        document.getElementById("reset").style.display = "none";
-        totalBullets = [];
+    document.getElementById("config").style.display = "block";
+    document.getElementById("mainGame").style.display = "none";
+    document.getElementById("result").innerText = '';
+    document.getElementById("reset").style.display = "none";
+    totalBullets = [];
 
-        currentPlayer = Math.random() > 0.5 ? 1 : 2;
+    currentPlayer = Math.random() > 0.5 ? 1 : 2;
 
-        updateTurnInfo();
-        updateLives();
+    updateTurnInfo();
+    updateLives();
+
+    // Pastikan tombol aksi ditampilkan kembali
+    document.getElementById("actions").style.display = "none"; // Sembunyikan tombol aksi saat mereset
     }
-
+        
     document.getElementById("shootSelf").addEventListener("click", function() {
         confirmAction("self");
     });
