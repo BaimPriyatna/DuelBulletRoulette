@@ -23,10 +23,7 @@ A simple and thrilling 2-player duel game designed for quick rounds and intense 
 | `style.css`   | Style       |
 | `script.js`   | Script      |
 
-## 🚀 Getting Started
+## 🔍 Review
 
-https://baimpriyatna.github.io/DuelBulletRoulette/
+```https://baimpriyatna.github.io/DuelBulletRoulette/
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/BaimPriyatna/DuelBulletRoulette.git
