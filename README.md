@@ -25,5 +25,5 @@ A simple and thrilling 2-player duel game designed for quick rounds and intense 
 
 ## 🔍 Review
 
-```https://baimpriyatna.github.io/DuelBulletRoulette/
+https://baimpriyatna.github.io/DuelBulletRoulette/
 
