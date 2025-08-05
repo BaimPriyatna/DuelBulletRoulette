@@ -25,6 +25,8 @@ A simple and thrilling 2-player duel game designed for quick rounds and intense 
 
 ## 🚀 Getting Started
 
+https://baimpriyatna.github.io/DuelBulletRoulette/
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/BaimPriyatna/DuelBulletRoulette.git
