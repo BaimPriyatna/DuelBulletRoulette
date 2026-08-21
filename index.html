@@ -3,139 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duel Bullet Roulette</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Simple bullet Roulette Game</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div id="appContainer">
-        <!-- Top Toolbar -->
-        <header id="topBar">
-            <h1 class="logo-title">DUEL BULLET ROULETTE</h1>
-            <button id="soundToggle" class="btn-secondary sound-btn">🔊 Sound: ON</button>
-        </header>
+    <div id="game">
+        <div id="config">
+            <img class="pistol" src="assets/pistol.png">
+            <h2>Set Up Game</h2>
 
-        <div id="game">
-            <!-- Setup Configuration Screen -->
-            <div id="config" class="glass-card">
-                <div class="header-icon-wrap">
-                    <img class="pistol pulse-glow" src="assets/pistol.png" alt="Pistol">
-                </div>
-                <h2>Game Setup</h2>
-                <p class="subtitle">Customize the bullet chamber before starting the duel</p>
-
-                <!-- Bullet selection controls -->
-                <div id="bulletSelection">
-                    <div class="bullet-control safe-control">
-                        <span class="control-label">Safe Bullets</span>
-                        <div class="control-row">
-                            <button id="minusSafe" class="btn-ctrl">-</button>
-                            <img src="assets/safe_bullet.png" alt="Safe Bullet" class="bullet-icon-img">
-                            <span id="safeBulletCount" class="bullet-count-num">4</span>
-                            <button id="plusSafe" class="btn-ctrl">+</button>
-                        </div>
-                    </div>
-
-                    <div class="bullet-control danger-control">
-                        <span class="control-label">Danger Bullets</span>
-                        <div class="control-row">
-                            <button id="minusDanger" class="btn-ctrl">-</button>
-                            <img src="assets/danger_bullet.png" alt="Danger Bullet" class="bullet-icon-img">
-                            <span id="dangerBulletCount" class="bullet-count-num">6</span>
-                            <button id="plusDanger" class="btn-ctrl">+</button>
-                        </div>
-                    </div>
+            <!-- Bullet control section -->
+            <div id="bulletSelection">
+                <!-- Safe bullets section -->
+                <div class="bullet-control">
+                    <button id="minusSafe">-</button>
+                    <img src="assets/safe_bullet.png" alt="Safe Bullet" width="30" height="30">
+                    <span id="safeBulletCount">4</span>
+                    <button id="plusSafe">+</button>
                 </div>
 
-                <!-- Bullet Ratio Bar -->
-                <div class="ratio-bar-container">
-                    <div id="bulletRatioFill" class="ratio-fill" style="width: 40%;"></div>
+                <!-- Danger bullets section -->
+                <div class="bullet-control">
+                    <button id="minusDanger">-</button>
+                    <img src="assets/danger_bullet.png" alt="Danger Bullet" width="30" height="30">
+                    <span id="dangerBulletCount">6</span>
+                    <button id="plusDanger">+</button>
                 </div>
-
-                <!-- Total bullets indicator -->
-                <div id="totalBullets">
-                    <h3>Chamber Preview</h3>
-                    <div id="bulletIcons" class="bullet-icons-grid"></div>
-                </div>
-
-                <button id="startGame" class="btn-primary start-btn">START DUEL</button>
             </div>
 
-            <!-- Main Gameplay Screen -->
-            <div id="mainGame" style="display: none;">
-                <div id="gameHeader">
-                    <div id="turnBadge" class="turn-badge">
-                        <h2 id="turnInfo">Player 1's Turn</h2>
-                    </div>
-                    <div id="remainingChamberInfo" class="chamber-info-badge">
-                        Chamber: 10 / 10 Bullets Remaining
-                    </div>
-                </div>
-
-                <div id="gameArea">
-                    <!-- Player 1 Card -->
-                    <div id="player1Area" class="player-card player1-theme">
-                        <div class="player-name-badge">PLAYER 1</div>
-                        <div class="sprite-wrapper">
-                            <img id="player1" class="player" src="assets/player1_idle.png" alt="Player 1">
-                        </div>
-                        <div class="lives-wrapper">
-                            <span class="lives-label">HP</span>
-                            <div class="lives" id="player1Lives"></div>
-                        </div>
-                    </div>
-
-                    <div class="versus-divider">
-                        <img src="assets/pistol.png" alt="Pistol" class="vs-pistol">
-                        <span class="vs-text">VS</span>
-                    </div>
-
-                    <!-- Player 2 Card -->
-                    <div id="player2Area" class="player-card player2-theme">
-                        <div class="player-name-badge">PLAYER 2</div>
-                        <div class="sprite-wrapper">
-                            <img id="player2" class="player" src="assets/player2_idle.png" alt="Player 2">
-                        </div>
-                        <div class="lives-wrapper">
-                            <span class="lives-label">HP</span>
-                            <div class="lives" id="player2Lives"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Controls -->
-                <div id="actions" class="action-buttons-group">
-                    <button id="shootSelf" class="btn-action btn-shoot-self">
-                        <span class="btn-title">🎯 Shoot Self</span>
-                        <span class="btn-subtext">Safe = Extra Turn</span>
-                    </button>
-                    <button id="shootEnemy" class="btn-action btn-shoot-enemy">
-                        <span class="btn-title">🔥 Shoot Enemy</span>
-                        <span class="btn-subtext">Damage Rival</span>
-                    </button>
-                </div>
-
-                <!-- Confirmation Modal Overlay -->
-                <div id="confirm" class="confirm-modal-overlay" style="display: none;">
-                    <div class="modal-card">
-                        <h3>PULL THE TRIGGER?</h3>
-                        <p>Confirm your action before firing the gun.</p>
-                        <div class="modal-buttons">
-                            <button id="yes" class="btn-primary modal-btn-yes">YES, FIRE!</button>
-                            <button id="no" class="btn-secondary modal-btn-no">CANCEL</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Result Message Feed -->
-                <div id="result" class="result-banner" style="display: none;"></div>
-
-                <button id="reset" class="btn-primary reset-btn" style="display: none;">PLAY AGAIN</button>
+            <!-- Total bullets indicator -->
+            <div id="totalBullets">
+                <h3>Total Bullets</h3>
+                <div id="bulletIcons"></div>
             </div>
+
+            <button id="startGame">Start Game</button>
         </div>
-    </div>
-    <script src="script.js"></script>
+
+        <div id="mainGame" style="display: none;">
+            <h2 id="turnInfo">Player 1's Turn</h2>
+            <div id="gameArea">
+                <div id="player1Area">
+                    <img id="player1" class="player" src="assets/player1_idle.png" alt="Player 1">
+                    <div class="lives" id="player1Lives"></div>
+                </div>
+                <div id="player2Area">
+                    <img id="player2" class="player" src="assets/player2_idle.png" alt="Player 2">
+                    <div class="lives" id="player2Lives"></div>
+                </div>
+            </div>
+            <div id="actions">
+                <button id="shootSelf">Shoot Self</button>
+                <button id="shootEnemy">Shoot Enemy</button>
+            </div>
+            <div id="confirm" style="display: none;">
+                <p>Are you sure?</p>
+                <button id="yes">Yes</button>
+                <button id="no">No</button>
+            </div>
+            <div id="result"></div>
+            <button id="reset" style="display: none;">Reset Game</button>
+        </div>
+    </div>  
+<script src="script.js"></script>
 </body>
 </html>

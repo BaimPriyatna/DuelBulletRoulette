@@ -1,601 +1,98 @@
-/* ---------------------------------------------------------------------
-   Duel Bullet Roulette - Modern Dark Glassmorphism Styling
-   --------------------------------------------------------------------- */
-
-:root {
-    --bg-dark: #0a0c14;
-    --card-bg: rgba(20, 24, 38, 0.75);
-    --border-glass: rgba(255, 255, 255, 0.1);
-    
-    --color-p1: #00d2ff;
-    --color-p1-glow: rgba(0, 210, 255, 0.35);
-    --color-p2: #ff2a5f;
-    --color-p2-glow: rgba(255, 42, 95, 0.35);
-    
-    --color-safe: #00e676;
-    --color-danger: #ff1744;
-    --color-gold: #ffd700;
-    
-    --font-heading: 'Space Grotesk', sans-serif;
-    --font-body: 'Outfit', sans-serif;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: var(--font-body);
-    background: radial-gradient(circle at 50% 20%, #1a1e36 0%, var(--bg-dark) 80%);
-    color: #e2e8f0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px;
-    overflow-x: hidden;
-}
-
-#appContainer {
-    width: 100%;
-    max-width: 850px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Header & Top Bar */
-#topBar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 10px;
-}
-
-.logo-title {
-    font-family: var(--font-heading);
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-}
-
-.sound-btn {
-    font-size: 0.85rem;
-    padding: 6px 14px;
-    border-radius: 20px;
-}
-
-/* Glass Card */
-.glass-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-glass);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-    text-align: center;
-    width: 100%;
-    animation: fadeIn 0.4s ease-out;
-}
-
-.header-icon-wrap {
-    margin-bottom: 15px;
-}
-
-.pistol {
-    width: 120px;
-    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
-    transition: transform 0.3s ease;
-}
-
-.pulse-glow {
-    animation: floatPistol 3s ease-in-out infinite alternate;
-}
-
-@keyframes floatPistol {
-    0% { transform: translateY(0) rotate(0deg); }
-    100% { transform: translateY(-8px) rotate(-3deg); }
-}
-
-h2 {
-    font-family: var(--font-heading);
-    font-size: 1.8rem;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-}
-
-.subtitle {
-    color: #94a3b8;
-    font-size: 0.95rem;
-    margin-bottom: 25px;
-}
-
-/* Bullet Setup Controls */
-#bulletSelection {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-
-.bullet-control {
-    background: rgba(15, 18, 28, 0.6);
-    border: 1px solid var(--border-glass);
-    border-radius: 14px;
-    padding: 15px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 180px;
-}
-
-.safe-control { border-top: 3px solid var(--color-safe); }
-.danger-control { border-top: 3px solid var(--color-danger); }
-
-.control-label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-}
-
-.control-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.bullet-icon-img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.2));
-}
-
-.bullet-count-num {
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    min-width: 30px;
-    text-align: center;
-}
-
-/* Ratio Bar */
-.ratio-bar-container {
-    width: 100%;
-    height: 8px;
-    background: var(--color-danger);
-    border-radius: 4px;
-    overflow: hidden;
-    margin: 15px 0 25px 0;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.ratio-fill {
-    height: 100%;
-    background: var(--color-safe);
-    transition: width 0.3s ease;
-}
-
-/* Chamber Preview */
-#totalBullets h3 {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #cbd5e1;
-    margin-bottom: 12px;
-}
-
-.bullet-icons-grid {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.25);
-    padding: 12px 18px;
-    border-radius: 12px;
-    margin-bottom: 25px;
-    min-height: 44px;
-}
-
-.bullet-icons-grid img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    transition: transform 0.2s ease;
-}
-
-.bullet-icons-grid img:hover {
-    transform: scale(1.25);
-}
-
-/* Gameplay Screen */
-#mainGame {
-    width: 100%;
-}
-
-#gameHeader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 25px;
-}
-
-.turn-badge {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
-    border: 1px solid rgba(255, 215, 0, 0.4);
-    padding: 10px 24px;
-    border-radius: 30px;
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
-}
-
-.turn-badge h2 {
-    font-size: 1.3rem;
-    color: var(--color-gold);
-    margin: 0;
-    letter-spacing: 1px;
-}
-
-.chamber-info-badge {
-    font-size: 0.85rem;
-    color: #94a3b8;
-    background: rgba(15, 23, 42, 0.6);
-    padding: 4px 14px;
-    border-radius: 12px;
-    border: 1px solid var(--border-glass);
-}
-
-/* Battleground Area */
-#gameArea {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.player-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border: 2px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
-    padding: 20px 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-    max-width: 240px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-}
-
-.player-card.active-turn {
-    transform: translateY(-5px);
-}
-
-.player1-theme.active-turn {
-    border-color: var(--color-p1);
-    box-shadow: 0 0 25px var(--color-p1-glow);
-}
-
-.player2-theme.active-turn {
-    border-color: var(--color-p2);
-    box-shadow: 0 0 25px var(--color-p2-glow);
-}
-
-.player-name-badge {
-    font-family: var(--font-heading);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 4px 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-}
-
-.player1-theme .player-name-badge {
-    background: rgba(0, 210, 255, 0.15);
-    color: var(--color-p1);
-    border: 1px solid rgba(0, 210, 255, 0.3);
-}
-
-.player2-theme .player-name-badge {
-    background: rgba(255, 42, 95, 0.15);
-    color: var(--color-p2);
-    border: 1px solid rgba(255, 42, 95, 0.3);
-}
-
-.sprite-wrapper {
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-}
-
-.player {
-    width: 140px;
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
-    transition: transform 0.2s ease, opacity 0.3s ease;
-}
-
-.versus-divider {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-}
-
-.vs-pistol {
-    width: 45px;
-    opacity: 0.7;
-}
-
-.vs-text {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #475569;
-}
-
-/* Lives */
-.lives-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 6px 12px;
-    border-radius: 12px;
-}
-
-.lives-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #64748b;
-}
-
-.lives {
-    display: flex;
-    gap: 6px;
-}
-
-.life {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.5));
-    transition: transform 0.3s ease;
-}
-
-.life.broken {
-    filter: grayscale(1) opacity(0.4);
-    transform: scale(0.85);
-}
-
-/* Action Buttons */
-.action-buttons-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 25px;
-    flex-wrap: wrap;
-}
-
-.btn-action {
-    flex: 1;
-    max-width: 220px;
-    padding: 14px 20px;
-    border-radius: 14px;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    transition: all 0.2s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-.btn-shoot-self {
-    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-    color: #ffffff;
-    border: 1px solid rgba(56, 189, 248, 0.4);
-}
-
-.btn-shoot-self:hover {
-    background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
-    box-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
-    transform: translateY(-2px);
-}
-
-.btn-shoot-enemy {
-    background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
-    color: #ffffff;
-    border: 1px solid rgba(251, 113, 133, 0.4);
-}
-
-.btn-shoot-enemy:hover {
-    background: linear-gradient(135deg, #be123c 0%, #e11d48 100%);
-    box-shadow: 0 0 20px rgba(251, 113, 133, 0.5);
-    transform: translateY(-2px);
-}
-
-.btn-title {
-    font-family: var(--font-heading);
-    font-size: 1.05rem;
-    font-weight: 700;
-}
-
-.btn-subtext {
-    font-size: 0.75rem;
-    opacity: 0.85;
-}
-
-/* Modal Overlay */
-.confirm-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(5, 7, 13, 0.75);
-    backdrop-filter: blur(8px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    animation: fadeIn 0.2s ease;
-}
-
-.modal-card {
-    background: var(--card-bg);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    padding: 30px;
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-}
-
-.modal-card h3 {
-    font-family: var(--font-heading);
-    color: var(--color-gold);
-    margin-bottom: 10px;
-}
-
-.modal-card p {
-    color: #cbd5e1;
-    font-size: 0.95rem;
-    margin-bottom: 20px;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-/* Result Banner */
-.result-banner {
-    background: rgba(15, 23, 42, 0.9);
-    border: 1px solid var(--border-glass);
-    border-radius: 14px;
-    padding: 16px 24px;
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-align: center;
-    margin-bottom: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    animation: popIn 0.3s ease;
-}
-
-/* Button Standard Styles */
-button {
-    font-family: var(--font-heading);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    color: #fff;
-    border: none;
-    padding: 12px 28px;
-    border-radius: 12px;
-    font-size: 1rem;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
-}
-
-.btn-secondary {
-    background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1;
-    border: 1px solid var(--border-glass);
-    padding: 10px 20px;
-    border-radius: 12px;
-}
-
-.btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
-}
-
-.btn-ctrl {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    border: 1px solid var(--border-glass);
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-ctrl:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-.start-btn, .reset-btn {
-    width: 100%;
-    padding: 15px;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-}
-
-/* Keyframes */
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.97); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes popIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-    #gameArea {
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #game {
+            text-align: center;
+        }
+
+        #gameArea {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        #bullets {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .bullet {
+            width: 50px;
+        }
+
+        #pistol {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .player {
+            width: 150px;
+            margin: 0 50px;
+        }
+
+        .lives {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        #bulletSelection {
+        display: flex;
         flex-direction: column;
-    }
-    
-    .player-card {
-        max-width: 100%;
-        width: 100%;
-    }
-    
-    .versus-divider {
-        flex-direction: row;
-        margin: 10px 0;
-    }
-    
-    .action-buttons-group {
-        flex-direction: column;
-    }
-    
-    .btn-action {
-        max-width: 100%;
-    }
-}
+        align-items: center;
+        margin: 20px 0;
+        }
+
+        .bullet-control {
+         display: flex;
+         align-items: center;
+         margin-bottom: 10px;
+         }
+
+        .bullet-control button {
+         width: 30px;
+         height: 30px;
+         font-size: 18px;
+         text-align: center;
+        }
+
+        #totalBullets {
+         margin-top: 20px;
+         text-align: center;
+        }
+
+        #bulletIcons img {
+         width: 30px;
+         margin: 2px;
+        }
+
+        .life {
+            width: 30px;
+            margin: 0 5px;
+        }
+
+        #actions {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .pistol {
+          width: 200px;
+        }
+
+        #reset {
+            display: none;
+            margin-top: 20px;
+        }
