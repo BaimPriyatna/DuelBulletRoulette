@@ -160,15 +160,26 @@
     }
 
     // --- Info giliran & nyawa ---
-    el.turnInfo.innerText = `Player ${state.currentPlayer}'s Turn`;
+    el.turnInfo.innerText = `PLAYER ${state.currentPlayer}'S TURN`;
+
+    if (el.player1Area && el.player2Area) {
+      if (state.currentPlayer === 1) {
+        el.player1Area.classList.add("active-turn");
+        el.player2Area.classList.remove("active-turn");
+      } else {
+        el.player2Area.classList.add("active-turn");
+        el.player1Area.classList.remove("active-turn");
+      }
+    }
+
     renderLives(el.player1Lives, state.lives[1]);
     renderLives(el.player2Lives, state.lives[2]);
 
     // --- Tombol aksi / dialog konfirmasi / tombol reset ---
     // Karena semuanya diturunkan dari `state.phase`, tidak mungkin ada
     // kondisi di mana kita "lupa" menampilkan tombol aksi di ronde baru.
-    el.actions.style.display = state.phase === PHASE.PLAYING ? "block" : "none";
-    el.confirm.style.display = state.phase === PHASE.CONFIRMING ? "block" : "none";
+    el.actions.style.display = state.phase === PHASE.PLAYING ? "flex" : "none";
+    el.confirm.style.display = state.phase === PHASE.CONFIRMING ? "flex" : "none";
     el.reset.style.display = state.phase === PHASE.GAME_OVER ? "block" : "none";
 
     // --- Teks hasil ---
@@ -322,7 +333,7 @@
 
     // Peluru aman
     if (target === "self") {
-      state.resultText = `Player ${shooter} shot themselves with a safe bullet and gets another turn!`;
+      state.resultText = `[SAFE] Player ${shooter} shot themselves with a SAFE bullet and earns another turn!`;
       render();
       after(1000, () => {
         resetPlayerSprite(shooter);
@@ -331,7 +342,7 @@
         render();
       });
     } else {
-      state.resultText = `Player ${shooter} shot Player ${victim} with a safe bullet!`;
+      state.resultText = `[SAFE] Player ${shooter} shot Player ${victim} with a SAFE bullet!`;
       render();
       after(1000, () => {
         resetPlayerSprite(shooter);
@@ -343,22 +354,22 @@
 
   function describeFatalShot(shooter, victim, target) {
     if (target === "self") {
-      return `Player ${shooter} shot themselves with a dangerous bullet and died! Player ${otherPlayer(shooter)} wins!`;
+      return `[BANG!] Player ${shooter} shot themselves with a DANGER bullet and died! Player ${otherPlayer(shooter)} WINS!`;
     }
-    return `Player ${shooter} shot Player ${victim} with a dangerous bullet and Player ${victim} died!`;
+    return `[BANG!] Player ${shooter} shot Player ${victim} with a DANGER bullet! Player ${victim} died! Player ${shooter} WINS!`;
   }
 
   function describeSurvivedShot(shooter, victim, target) {
     if (target === "self") {
-      return `Player ${shooter} shot themselves with a dangerous bullet but survived!`;
+      return `▸ Player ${shooter} shot themselves with a DANGER bullet but SURVIVED!`;
     }
-    return `Player ${shooter} shot Player ${victim} with a dangerous bullet but they survived!`;
+    return `▸ Player ${shooter} shot Player ${victim} with a DANGER bullet but SURVIVED!`;
   }
 
   /** Pindah giliran, atau nyatakan seri kalau peluru sudah habis. */
   function advanceTurn() {
     if (state.bullets.length === 0) {
-      state.resultText = "It's a tie! No bullets left!";
+      state.resultText = "▸ IT'S A TIE! All bullets in the chamber have been exhausted!";
       endGame();
       return;
     }
