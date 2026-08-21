@@ -366,8 +366,8 @@
     state.pendingTarget = null;
     state.resultText = "";
     state.phase = PHASE.PLAYING;
-    if (state.lives[1] > 0) resetPlayerSprite(1);
-    if (state.lives[2] > 0) resetPlayerSprite(2);
+    resetPlayerSprite(1);
+    resetPlayerSprite(2);
     render();
   }
 
