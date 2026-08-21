@@ -459,10 +459,7 @@
       state.lives[victim]--;
 
       if (state.lives[victim] <= 0) {
-<<<<<<< HEAD
         // PERBAIKAN BUG: kembalikan shooter ke pose idle jika shooter bukan korban
-=======
->>>>>>> 92fd528 (downgrade design, fix bug)
         if (shooter !== victim) {
           resetPlayerSprite(shooter);
         }
@@ -536,16 +533,11 @@
     state.pendingTarget = null;
     state.resultText = "";
     state.phase = PHASE.PLAYING;
-<<<<<<< HEAD
 
     // Pastikan sprite pemain yang masih hidup kembali ke idle pose
     if (state.lives[1] > 0) resetPlayerSprite(1);
     if (state.lives[2] > 0) resetPlayerSprite(2);
 
-=======
-    if (state.lives[1] > 0) resetPlayerSprite(1);
-    if (state.lives[2] > 0) resetPlayerSprite(2);
->>>>>>> 92fd528 (downgrade design, fix bug)
     render();
   }
 
