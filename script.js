@@ -66,6 +66,8 @@
     turnInfo: document.getElementById("turnInfo"),
     player1: document.getElementById("player1"),
     player2: document.getElementById("player2"),
+    player1Area: document.getElementById("player1Area"),
+    player2Area: document.getElementById("player2Area"),
     player1Lives: document.getElementById("player1Lives"),
     player2Lives: document.getElementById("player2Lives"),
 
@@ -73,6 +75,10 @@
     shootEnemy: document.getElementById("shootEnemy"),
     yes: document.getElementById("yes"),
     no: document.getElementById("no"),
+
+    game: document.getElementById("game"),
+    flash: document.getElementById("flash"),
+    duelEmblem: document.getElementById("duelEmblem"),
   };
 
   // ---------------------------------------------------------------------
@@ -89,6 +95,7 @@
       pendingTarget: null, // "self" | "enemy" saat dialog konfirmasi tampil
       resultText: "",
       timerId: null, // referensi setTimeout animasi yang sedang berjalan
+      prevLives: { 1: STARTING_LIVES, 2: STARTING_LIVES }, // buat trigger animasi heart-shatter
     };
   }
 
@@ -161,8 +168,14 @@
 
     // --- Info giliran & nyawa ---
     el.turnInfo.innerText = `Player ${state.currentPlayer}'s Turn`;
-    renderLives(el.player1Lives, state.lives[1]);
-    renderLives(el.player2Lives, state.lives[2]);
+    renderLives(el.player1Lives, state.lives[1], state.prevLives[1]);
+    renderLives(el.player2Lives, state.lives[2], state.prevLives[2]);
+    state.prevLives = { 1: state.lives[1], 2: state.lives[2] };
+
+    // --- HUD: sorot panel pemain yang sedang giliran ---
+    const activePlaying = state.phase === PHASE.PLAYING || state.phase === PHASE.CONFIRMING;
+    el.player1Area.classList.toggle("active", activePlaying && state.currentPlayer === 1);
+    el.player2Area.classList.toggle("active", activePlaying && state.currentPlayer === 2);
 
     // --- Tombol aksi / dialog konfirmasi / tombol reset ---
     // Karena semuanya diturunkan dari `state.phase`, tidak mungkin ada
@@ -176,12 +189,16 @@
     el.result.style.display = state.resultText ? "block" : "none";
   }
 
-  function renderLives(container, livesLeft) {
+  function renderLives(container, livesLeft, prevLivesLeft) {
     container.innerHTML = "";
     for (let i = 0; i < STARTING_LIVES; i++) {
       const heart = document.createElement("img");
       heart.classList.add("life");
       heart.src = i < livesLeft ? "assets/heart.png" : "assets/heart_break.png";
+      // Kalau nyawa ini baru saja hilang di render ini, kasih animasi shatter.
+      if (prevLivesLeft !== undefined && i < prevLivesLeft && i >= livesLeft) {
+        heart.classList.add("lost");
+      }
       container.appendChild(heart);
     }
   }
@@ -191,6 +208,7 @@
     const img = el[`player${player}`];
     img.src = `assets/player${player}_idle.png`;
     img.style.visibility = "visible";
+    img.classList.remove("ghosted", "firing");
   }
 
   function setPlayerSprite(player, pose) {
@@ -240,10 +258,13 @@
     state.bullets = buildBulletPool(state.safeBullets, state.dangerBullets);
     state.currentPlayer = Math.random() > 0.5 ? 1 : 2;
     state.lives = { 1: STARTING_LIVES, 2: STARTING_LIVES };
+    state.prevLives = { 1: STARTING_LIVES, 2: STARTING_LIVES };
     state.pendingTarget = null;
     state.resultText = "";
     state.phase = PHASE.PLAYING;
 
+    el.player1.classList.remove("ghosted");
+    el.player2.classList.remove("ghosted");
     resetPlayerSprite(1);
     resetPlayerSprite(2);
     render();
@@ -275,6 +296,33 @@
     render();
   }
 
+  /** Trigger animasi recoil singkat pada sprite penembak. */
+  function playRecoil(player) {
+    const img = el[`player${player}`];
+    img.classList.remove("firing");
+    // force reflow supaya animasi bisa di-restart kalau ditrigger berturut-turut
+    void img.offsetWidth;
+    img.classList.add("firing");
+  }
+
+  /** Trigger screen-shake + flash merah singkat saat kena peluru tajam. */
+  function playImpact() {
+    el.game.classList.remove("impact");
+    void el.game.offsetWidth;
+    el.game.classList.add("impact");
+    el.flash.classList.remove("hit");
+    void el.flash.offsetWidth;
+    el.flash.classList.add("hit");
+    setTimeout(() => el.game.classList.remove("impact"), 400);
+  }
+
+  /** Kedip singkat pada emblem tengah tiap kali satu peluru ditembakkan — murni visual, tidak menunjukkan sisa peluru. */
+  function pulseEmblem() {
+    el.duelEmblem.classList.remove("pulse");
+    void el.duelEmblem.offsetWidth;
+    el.duelEmblem.classList.add("pulse");
+  }
+
   function cancelShot() {
     state.pendingTarget = null;
     state.phase = PHASE.PLAYING;
@@ -290,9 +338,12 @@
     const victim = target === "self" ? shooter : otherPlayer(shooter);
 
     state.phase = PHASE.RESOLVING;
+    playRecoil(shooter);
+    pulseEmblem();
 
     if (bullet === "danger") {
       state.lives[victim]--;
+      playImpact();
 
       if (state.lives[victim] <= 0) {
         if (shooter !== victim) {
@@ -301,6 +352,7 @@
         setPlayerSprite(victim, "ghost");
         // Dukung file animasi .gif untuk pose "ghost"
         el[`player${victim}`].src = `assets/player${victim}_ghost.gif`;
+        el[`player${victim}`].classList.add("ghosted");
         state.resultText = describeFatalShot(shooter, victim, target);
         render();
         endGame();

@@ -2,69 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple bullet Roulette Game</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Duel Bullet Roulette</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
+    <div id="flash"></div>
+
     <div id="game">
+
+        <!-- ===================== CONFIG SCREEN ===================== -->
         <div id="config">
-            <img class="pistol" src="assets/pistol.png">
-            <h2>Set Up Game</h2>
+            <div class="config-inner">
+                <img class="pistol" src="assets/pistol.png" alt="Pistol">
+                <p class="eyebrow">Load the chamber</p>
+                <h2>Set Up the Duel</h2>
 
-            <!-- Bullet control section -->
-            <div id="bulletSelection">
-                <!-- Safe bullets section -->
-                <div class="bullet-control">
-                    <button id="minusSafe">-</button>
-                    <img src="assets/safe_bullet.png" alt="Safe Bullet" width="30" height="30">
-                    <span id="safeBulletCount">4</span>
-                    <button id="plusSafe">+</button>
+                <div id="bulletSelection">
+                    <div class="bullet-control">
+                        <span class="bc-label">Safe</span>
+                        <button id="minusSafe" aria-label="Decrease safe bullets">&minus;</button>
+                        <img src="assets/safe_bullet.png" alt="Safe Bullet" width="30" height="30">
+                        <span id="safeBulletCount">4</span>
+                        <button id="plusSafe" aria-label="Increase safe bullets">+</button>
+                    </div>
+
+                    <div class="bullet-control">
+                        <span class="bc-label">Danger</span>
+                        <button id="minusDanger" aria-label="Decrease danger bullets">&minus;</button>
+                        <img src="assets/danger_bullet.png" alt="Danger Bullet" width="30" height="30">
+                        <span id="dangerBulletCount">6</span>
+                        <button id="plusDanger" aria-label="Increase danger bullets">+</button>
+                    </div>
                 </div>
 
-                <!-- Danger bullets section -->
-                <div class="bullet-control">
-                    <button id="minusDanger">-</button>
-                    <img src="assets/danger_bullet.png" alt="Danger Bullet" width="30" height="30">
-                    <span id="dangerBulletCount">6</span>
-                    <button id="plusDanger">+</button>
+                <div id="totalBullets">
+                    <h3>Total Bullets</h3>
+                    <div id="bulletIcons"></div>
                 </div>
-            </div>
 
-            <!-- Total bullets indicator -->
-            <div id="totalBullets">
-                <h3>Total Bullets</h3>
-                <div id="bulletIcons"></div>
+                <button id="startGame">Start Duel</button>
             </div>
-
-            <button id="startGame">Start Game</button>
         </div>
 
+        <!-- ===================== MAIN GAME ===================== -->
         <div id="mainGame" style="display: none;">
-            <h2 id="turnInfo">Player 1's Turn</h2>
-            <div id="gameArea">
-                <div id="player1Area">
-                    <img id="player1" class="player" src="assets/player1_idle.png" alt="Player 1">
-                    <div class="lives" id="player1Lives"></div>
-                </div>
-                <div id="player2Area">
-                    <img id="player2" class="player" src="assets/player2_idle.png" alt="Player 2">
-                    <div class="lives" id="player2Lives"></div>
-                </div>
+
+            <div class="hud-top">
+                <span class="hud-tag">DUEL IN PROGRESS</span>
+                <h2 id="turnInfo">Player 1's Turn</h2>
             </div>
+
+            <div id="gameArea">
+                <section class="player-panel" id="player1Area" data-player="1">
+                    <div class="panel-label">PLAYER 1</div>
+                    <div class="sprite-stage">
+                        <div class="sprite-glow"></div>
+                        <img id="player1" class="player" src="assets/player1_idle.png" alt="Player 1">
+                    </div>
+                    <div class="lives" id="player1Lives"></div>
+                </section>
+
+                <div class="duel-emblem" id="duelEmblem">
+                    <span class="emblem-ring"></span>
+                    <span class="emblem-core"></span>
+                </div>
+
+                <section class="player-panel" id="player2Area" data-player="2">
+                    <div class="panel-label">PLAYER 2</div>
+                    <div class="sprite-stage">
+                        <div class="sprite-glow"></div>
+                        <img id="player2" class="player" src="assets/player2_idle.png" alt="Player 2">
+                    </div>
+                    <div class="lives" id="player2Lives"></div>
+                </section>
+            </div>
+
+            <div id="result"></div>
+
             <div id="actions">
                 <button id="shootSelf">Shoot Self</button>
                 <button id="shootEnemy">Shoot Enemy</button>
             </div>
+
             <div id="confirm" style="display: none;">
-                <p>Are you sure?</p>
-                <button id="yes">Yes</button>
-                <button id="no">No</button>
+                <p>Pull the trigger?</p>
+                <div class="confirm-btns">
+                    <button id="yes">Yes</button>
+                    <button id="no">No</button>
+                </div>
             </div>
-            <div id="result"></div>
+
             <button id="reset" style="display: none;">Reset Game</button>
         </div>
-    </div>  
+    </div>
 <script src="script.js"></script>
 </body>
 </html>

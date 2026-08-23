@@ -1,98 +1,543 @@
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
+/* =========================================================================
+   DUEL BULLET ROULETTE — Noir Duel theme
+   Palette: void / ash / bone / blood / brass / smoke
+   Display: Bebas Neue | Body: Inter | Data/HUD: Space Mono
+   ========================================================================= */
 
-        #game {
-            text-align: center;
-        }
+:root {
+    --void: #0b0908;
+    --ash: #17130f;
+    --ash-2: #201a15;
+    --bone: #ece4d3;
+    --bone-dim: #a89f8d;
+    --blood: #b7202a;
+    --blood-glow: rgba(183, 32, 42, 0.55);
+    --brass: #c99a3d;
+    --brass-glow: rgba(201, 154, 61, 0.45);
+    --smoke: #3d372f;
 
-        #gameArea {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
+    --font-display: "Bebas Neue", "Arial Narrow", sans-serif;
+    --font-body: "Inter", Arial, sans-serif;
+    --font-mono: "Space Mono", monospace;
+}
 
-        #bullets {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        .bullet {
-            width: 50px;
-        }
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+    }
+}
 
-        #pistol {
-            width: 100px;
-            margin-bottom: 20px;
-        }
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--bone);
+    background:
+        radial-gradient(ellipse at 50% -10%, rgba(183, 32, 42, 0.12), transparent 55%),
+        radial-gradient(ellipse at 50% 110%, rgba(201, 154, 61, 0.08), transparent 50%),
+        var(--void);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 14px 60px;
+}
 
-        .player {
-            width: 150px;
-            margin: 0 50px;
-        }
+#flash {
+    position: fixed;
+    inset: 0;
+    background: var(--blood);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+}
+#flash.hit {
+    animation: flashPulse 420ms ease-out;
+}
+@keyframes flashPulse {
+    0% { opacity: 0.55; }
+    100% { opacity: 0; }
+}
 
-        .lives {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-        #bulletSelection {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 20px 0;
-        }
+#game {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+}
 
-        .bullet-control {
-         display: flex;
-         align-items: center;
-         margin-bottom: 10px;
-         }
+/* ===================== CONFIG SCREEN ===================== */
 
-        .bullet-control button {
-         width: 30px;
-         height: 30px;
-         font-size: 18px;
-         text-align: center;
-        }
+#config {
+    background: linear-gradient(180deg, var(--ash), var(--ash-2));
+    border: 1px solid var(--smoke);
+    border-radius: 18px;
+    padding: 32px 24px 28px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7);
+}
 
-        #totalBullets {
-         margin-top: 20px;
-         text-align: center;
-        }
+.pistol {
+    width: 140px;
+    filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.6));
+    margin-bottom: 6px;
+    animation: pistolDrift 5s ease-in-out infinite;
+}
+@keyframes pistolDrift {
+    0%, 100% { transform: translateY(0) rotate(-1deg); }
+    50% { transform: translateY(-6px) rotate(1deg); }
+}
 
-        #bulletIcons img {
-         width: 30px;
-         margin: 2px;
-        }
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--brass);
+    margin: 4px 0 2px;
+}
 
-        .life {
-            width: 30px;
-            margin: 0 5px;
-        }
+#config h2 {
+    font-family: var(--font-display);
+    font-size: 34px;
+    letter-spacing: 0.03em;
+    margin: 0 0 22px;
+    color: var(--bone);
+    text-shadow: 0 0 24px var(--blood-glow);
+}
 
-        #actions {
-            margin-top: 20px;
-        }
+#bulletSelection {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    margin: 0 0 24px;
+}
 
-        button {
-            padding: 10px 20px;
-            margin: 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .pistol {
-          width: 200px;
-        }
+.bullet-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--smoke);
+    border-radius: 12px;
+    padding: 10px 14px;
+}
 
-        #reset {
-            display: none;
-            margin-top: 20px;
-        }
+.bc-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    width: 58px;
+    text-align: left;
+}
+
+.bullet-control img {
+    width: 26px;
+    height: 26px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.bullet-control button {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--smoke);
+    background: var(--ash-2);
+    color: var(--bone);
+    font-size: 18px;
+    line-height: 1;
+    padding: 0;
+    margin: 0;
+    transition: transform 120ms ease, border-color 120ms ease;
+}
+.bullet-control button:hover {
+    border-color: var(--brass);
+    transform: translateY(-1px);
+}
+.bullet-control button:active {
+    transform: scale(0.92);
+}
+
+#bulletSelection span:not(.bc-label) {
+    font-family: var(--font-mono);
+    font-size: 16px;
+    min-width: 20px;
+}
+
+#totalBullets {
+    margin: 4px 0 26px;
+}
+#totalBullets h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--bone-dim);
+    font-weight: 400;
+    margin: 0 0 10px;
+}
+#bulletIcons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+}
+#bulletIcons img {
+    width: 22px;
+    animation: popIn 260ms ease backwards;
+}
+@keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* ===================== BUTTONS (shared) ===================== */
+
+button {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+}
+
+#startGame,
+#reset,
+#actions button {
+    width: 100%;
+    padding: 13px 20px;
+    margin: 5px 0;
+    border-radius: 12px;
+    border: 1px solid var(--blood);
+    background: linear-gradient(180deg, #7a1119, var(--blood));
+    color: var(--bone);
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    box-shadow: 0 10px 24px -10px var(--blood-glow);
+    transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+}
+#startGame:hover,
+#reset:hover,
+#actions button:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
+#startGame:active,
+#reset:active,
+#actions button:active {
+    transform: translateY(0) scale(0.98);
+}
+
+#shootSelf {
+    background: linear-gradient(180deg, #3a3128, var(--ash-2));
+    border-color: var(--brass);
+    box-shadow: 0 10px 24px -10px var(--brass-glow);
+}
+
+/* ===================== MAIN GAME / HUD ===================== */
+
+#mainGame {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.hud-top {
+    padding: 4px 0 2px;
+}
+.hud-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--blood);
+    border: 1px solid var(--blood);
+    border-radius: 999px;
+    padding: 3px 10px;
+    animation: tagPulse 2.2s ease-in-out infinite;
+}
+@keyframes tagPulse {
+    0%, 100% { opacity: 0.65; }
+    50% { opacity: 1; }
+}
+
+#turnInfo {
+    font-family: var(--font-display);
+    font-size: 30px;
+    letter-spacing: 0.03em;
+    margin: 6px 0 0;
+    color: var(--bone);
+    text-shadow: 0 0 20px var(--blood-glow);
+}
+
+#gameArea {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    background: linear-gradient(180deg, var(--ash), var(--ash-2));
+    border: 1px solid var(--smoke);
+    border-radius: 20px;
+    padding: 18px 10px;
+}
+
+.player-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 4px 2px;
+    border-radius: 14px;
+    opacity: 0.55;
+    filter: grayscale(0.5);
+    transition: opacity 220ms ease, filter 220ms ease;
+}
+
+.player-panel.active {
+    opacity: 1;
+    filter: grayscale(0);
+    background: radial-gradient(ellipse at 50% 50%, rgba(201, 154, 61, 0.08), transparent 70%);
+}
+
+.panel-label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.16em;
+    color: var(--bone-dim);
+    white-space: nowrap;
+}
+.player-panel.active .panel-label {
+    color: var(--brass);
+}
+
+.lives {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+.life {
+    width: 18px;
+    transition: transform 160ms ease;
+}
+.life.lost {
+    animation: heartShatter 480ms ease;
+}
+@keyframes heartShatter {
+    0% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.4) rotate(-8deg); }
+    50% { transform: scale(0.85) rotate(6deg); }
+    75% { transform: scale(1.1) rotate(-3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+.sprite-stage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 88px;
+}
+
+.sprite-glow {
+    position: absolute;
+    width: 78px;
+    height: 78px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--brass-glow), transparent 70%);
+    opacity: 0;
+    transition: opacity 220ms ease;
+}
+.player-panel.active .sprite-glow {
+    opacity: 1;
+    animation: glowBreathe 2.4s ease-in-out infinite;
+}
+@keyframes glowBreathe {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+
+.player {
+    position: relative;
+    height: 86px;
+    width: auto;
+    max-width: 100%;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.55));
+    transition: filter 160ms ease;
+}
+
+.player-panel.active .player {
+    animation: idleBreathe 2.4s ease-in-out infinite;
+}
+@keyframes idleBreathe {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-4px) scale(1.015); }
+}
+
+.player.firing {
+    animation: recoil 260ms cubic-bezier(.36,.07,.19,.97);
+}
+@keyframes recoil {
+    0% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(-10px) rotate(-3deg) scale(1.05); }
+    55% { transform: translateX(6px) rotate(2deg); }
+    100% { transform: translateX(0) rotate(0deg); }
+}
+
+.player.ghosted {
+    filter: grayscale(1) brightness(0.7) drop-shadow(0 0 18px var(--blood-glow));
+}
+
+/* ------- duel emblem (center divider, purely decorative — no info shown) ------- */
+
+.duel-emblem {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.emblem-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 1.5px solid var(--brass);
+    opacity: 0.55;
+    filter: drop-shadow(0 0 6px var(--brass-glow));
+}
+
+.emblem-core {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #4a3a22, var(--void) 75%);
+    border: 1px solid var(--smoke);
+}
+.emblem-core::before,
+.emblem-core::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: var(--blood);
+}
+.emblem-core::before {
+    width: 10px;
+    height: 1.5px;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.emblem-core::after {
+    width: 10px;
+    height: 1.5px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.duel-emblem.pulse .emblem-ring {
+    animation: emblemPulse 420ms ease;
+}
+@keyframes emblemPulse {
+    0% { transform: scale(1); opacity: 0.55; }
+    40% { transform: scale(1.35); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.55; }
+}
+
+/* ===================== RESULT / CONFIRM ===================== */
+
+#result {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    background: rgba(183, 32, 42, 0.12);
+    border: 1px solid var(--blood);
+    color: var(--bone);
+    border-radius: 12px;
+    padding: 12px 16px;
+    animation: slideDown 260ms ease;
+}
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#actions {
+    display: flex;
+    flex-direction: column;
+}
+
+#confirm {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    width: min(320px, 84vw);
+    background: linear-gradient(180deg, var(--ash), var(--ash-2));
+    border: 1px solid var(--blood);
+    border-radius: 16px;
+    padding: 26px 22px 20px;
+    box-shadow: 0 0 0 100vmax rgba(0, 0, 0, 0.72), 0 20px 50px rgba(0, 0, 0, 0.6);
+    animation: modalPop 200ms cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalPop {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+#confirm p {
+    font-family: var(--font-display);
+    font-size: 24px;
+    letter-spacing: 0.02em;
+    margin: 0 0 16px;
+    color: var(--bone);
+}
+.confirm-btns {
+    display: flex;
+    gap: 10px;
+}
+.confirm-btns button {
+    flex: 1;
+    margin: 0;
+}
+#no {
+    background: linear-gradient(180deg, #3a3128, var(--ash-2)) !important;
+    border-color: var(--smoke) !important;
+    box-shadow: none !important;
+}
+
+/* ===================== SCREEN SHAKE ===================== */
+
+#game.impact {
+    animation: screenShake 380ms ease;
+}
+@keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    15% { transform: translate(-6px, 2px) rotate(-0.4deg); }
+    30% { transform: translate(5px, -3px) rotate(0.4deg); }
+    45% { transform: translate(-4px, 3px); }
+    60% { transform: translate(4px, -2px); }
+    75% { transform: translate(-2px, 1px); }
+}
+
+/* ===================== responsive niceties ===================== */
+
+@media (min-width: 480px) {
+    .sprite-stage { height: 104px; }
+    .player { height: 102px; }
+}
